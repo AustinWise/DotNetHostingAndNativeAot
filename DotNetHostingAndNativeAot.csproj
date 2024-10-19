@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PublishAot>true</PublishAot>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <Target Name="PrepareForNativeBuild" AfterTargets="Build">
+        <PropertyGroup>
+            <NetHostDir>$(NetCoreTargetingPackRoot)/Microsoft.NETCore.App.Host.$(NETCoreSdkRuntimeIdentifier)/$(BundledNETCoreAppPackageVersion)/runtimes/$(NETCoreSdkRuntimeIdentifier)/native</NetHostDir>
+            <NetHostName Condition="$([MSBuild]::IsOsPlatform('Windows'))">libnethost.lib</NetHostName>
+            <NetHostName Condition="!$([MSBuild]::IsOsPlatform('Windows'))">libnethost.a</NetHostName>
+        </PropertyGroup>
+
+        <ItemGroup>
+            <NativeLibrary Include="$(NetHostDir)/$(NetHostName)" />
+        </ItemGroup>
+
+        <ItemGroup Condition="!$([MSBuild]::IsOsPlatform('Windows'))">
+            <!-- This is needed by libnethost.a. -->
+            <LinkerArg Include="-lstdc++" />
+        </ItemGroup>
+    </Target>
+
+</Project>
