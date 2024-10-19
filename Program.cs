@@ -34,7 +34,7 @@ partial class Program
             int rc = get_hostfxr_path_windows(buffer, ref bufferSize, IntPtr.Zero);
             if (rc == 0)
             {
-                return new string(buffer.AsSpan().Slice(0, (int)bufferSize));
+                return new string(buffer.AsSpan().Slice(0, (int)bufferSize - 1));
             }
             else
             {
@@ -48,7 +48,7 @@ partial class Program
             int rc = get_hostfxr_path_non_windows(buffer, ref bufferSize, IntPtr.Zero);
             if (rc == 0)
             {
-                return Encoding.UTF8.GetString(buffer.AsSpan().Slice(0, (int)bufferSize));
+                return Encoding.UTF8.GetString(buffer.AsSpan().Slice(0, (int)bufferSize - 1));
             }
             else
             {
