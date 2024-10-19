@@ -2,12 +2,9 @@
 
 This project shows how to consume the .NET hosting API from a .NET NativeAOT application.
 
-## TODO
-
-There is one major problem with the application as written: it only works when published as a
-NativeAOT application. This is because it uses static linking with the `nethost` API. Ideally it
-would support using dynamic linking with the `nethost` API so that the application could be tested
-as a regular .NET app running on CoreCLR.
+When compiled as debug, the `nethost` library is loaded dynamically, so that the application can be
+run as a normal .NET app on CoreCLR. In release configuration, the `nethost` library is statically
+linked. Therefore when compiled as release the app only works as a NativeAOT app.
 
 ## References
 

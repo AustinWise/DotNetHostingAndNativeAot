@@ -6,6 +6,12 @@ using System.Text;
 
 partial class Program
 {
+#if DEBUG
+    private const string NETHOST_NAME = "nethost";
+#else
+    private const string NETHOST_NAME = "*";
+#endif
+
     static void Main()
     {
         try
@@ -51,9 +57,9 @@ partial class Program
         }
     }
 
-    [LibraryImport("*", EntryPoint = "get_hostfxr_path")]
+    [LibraryImport(NETHOST_NAME, EntryPoint = "get_hostfxr_path")]
     private static partial int get_hostfxr_path_windows(char[] buffer, ref nint buffer_size, IntPtr parameters);
 
-    [LibraryImport("*", EntryPoint = "get_hostfxr_path")]
+    [LibraryImport(NETHOST_NAME, EntryPoint = "get_hostfxr_path")]
     private static partial int get_hostfxr_path_non_windows(byte[] buffer, ref nint buffer_size, IntPtr parameters);
 }
