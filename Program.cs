@@ -6,11 +6,7 @@ using System.Text;
 
 partial class Program
 {
-#if DEBUG
     private const string NETHOST_NAME = "nethost";
-#else
-    private const string NETHOST_NAME = "*";
-#endif
 
     static void Main()
     {

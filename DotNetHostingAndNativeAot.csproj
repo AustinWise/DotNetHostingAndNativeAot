@@ -20,16 +20,18 @@
             <NetHostName Condition="!$([MSBuild]::IsOsPlatform('Windows')) and !$([MSBuild]::IsOsPlatform('OSX'))">libnethost.so</NetHostName>
         </PropertyGroup>
 
-        <ItemGroup Condition="'$(Configuration)' == 'Release'">
+        <!-- These two ItemGroups are for static linking publishing as NativeAOT. -->
+        <ItemGroup>
             <NativeLibrary Include="$(NetHostDir)/$(NetHostStaticName)" />
+            <DirectPInvoke Include="nethost" />
         </ItemGroup>
-
-        <ItemGroup Condition="'$(Configuration)' == 'Release' and !$([MSBuild]::IsOsPlatform('Windows'))">
+        <ItemGroup Condition="!$([MSBuild]::IsOsPlatform('Windows'))">
             <!-- This is needed by libnethost.a. -->
             <LinkerArg Include="-lstdc++" />
         </ItemGroup>
 
-        <Copy SourceFiles="$(NetHostDir)/$(NetHostName)" DestinationFolder="$(OutDir)" Condition="'$(Configuration)' != 'Release'" />
+        <!-- This is for dynamic linking when running on CoreCLR. -->
+        <Copy SourceFiles="$(NetHostDir)/$(NetHostName)" DestinationFolder="$(OutDir)" />
     </Target>
 
 </Project>
